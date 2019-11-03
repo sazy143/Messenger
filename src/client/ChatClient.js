@@ -12,7 +12,7 @@ class ChatClient extends Component {
             allMessages: [],
             numUsers: 0
         }
-        socket = socketIOClient(this.state.server, {secure:true});
+        socket = socketIOClient(this.state.server, {secure:true, rejectUnauthorized: false, path: 'chat/socket.io'});
     }
     messagesEndRef = React.createRef();
     scrollToBottom = () => {
