@@ -5,7 +5,7 @@ class ChatClient extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            server: 'https://68.146.0.255:5000',
+            server: 'https://68.146.0.255/chat',
             message: '',
             userName: this.props.userName,
             messagesSent: 0,
