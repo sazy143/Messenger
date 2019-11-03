@@ -124,7 +124,7 @@ class Main extends Component {
         let endIndex = (cookie.indexOf(';',startIndex+9)===-1 ? cookie.length : cookie.indexOf(';',startIndex+9));
         let value = cookie.substring(startIndex+9,endIndex);
         console.log(startIndex+9, endIndex, value, cookie);
-        fetch('/checkToken').then(res => {
+        fetch('/api/checkToken').then(res => {
             if(res.status ===200) {
                 console.log('token valid');
                 this.setLogin(value);

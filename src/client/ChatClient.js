@@ -5,14 +5,14 @@ class ChatClient extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            server: 'http://127.0.0.1:5000',
+            server: 'https://68.146.0.255:5000',
             message: '',
             userName: this.props.userName,
             messagesSent: 0,
             allMessages: [],
             numUsers: 0
         }
-        socket = socketIOClient(this.state.server);
+        socket = socketIOClient(this.state.server, {secure:true});
     }
     messagesEndRef = React.createRef();
     scrollToBottom = () => {
@@ -72,7 +72,7 @@ class ChatClient extends Component {
             console.log('new user joined');
             let allMessages = this.state.allMessages;
             allMessages.push(data);
-            fetch('/activeUsers',{
+            fetch('/api/activeUsers',{
                 method:'POST',
                 headers: {
                     'Content-Type':'application/json'
@@ -96,7 +96,7 @@ class ChatClient extends Component {
         socket.on('logout', data =>{
             let allMessages = this.state.allMessages;
             allMessages.push(data);
-            fetch('/activeUsers',{
+            fetch('/api/activeUsers',{
                 method:'POST',
                 headers: {
                     'Content-Type':'application/json'
@@ -117,7 +117,7 @@ class ChatClient extends Component {
                 allMessages: allMessages,
             });
         });
-        setTimeout(() => {fetch('/activeUsers',{
+        setTimeout(() => {fetch('/api/activeUsers',{
                 method:'POST',
                 headers: {
                     'Content-Type':'application/json'

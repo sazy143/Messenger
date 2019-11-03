@@ -18,7 +18,7 @@ app.use(cookieParser());
 const server = app.listen(port, () => console.log(`Server listening on port: ${port}`));
 
 //METHOD TO GET ALL REGISTERED USERS FROM DB
-app.get('/users', async (req, res) => {
+app.get('/api/users', async (req, res) => {
     try {
         let users = await DB.allUsers();
         //console.log(users);
@@ -103,7 +103,7 @@ app.post('/api/registerUser', async(req,res) => {
 });
 
 //CHECK WEBTOKEN
-app.get('/checkToken', withAuth, (req, res) => {
+app.get('/api/checkToken', withAuth, (req, res) => {
     res.sendStatus(200);
 })
 
@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
 });
 
 //GET HOW MANY USERS ARE ONLINE
-app.post('/activeUsers', (req, res) => {
+app.post('/api/activeUsers', (req, res) => {
     const numUsers = Object.keys(clients).length;
     try{
         res.status(200).json({
