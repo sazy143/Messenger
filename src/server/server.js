@@ -109,7 +109,7 @@ app.get('/api/checkToken', withAuth, (req, res) => {
 
 //CODE TO SETUP OUR SOCKET
 let clients = {};
-const io = socket(server);
+const io = socket(server, {secure: true});
 
 io.on('connection', (socket) => {
     console.log(`Socket ${socket.id} connected`);
