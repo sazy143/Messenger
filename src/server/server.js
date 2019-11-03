@@ -1,4 +1,6 @@
 const DB = require('./db/users.js');
+const fs = require('fs');
+const https = require('https');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -9,13 +11,19 @@ const port = process.env.PORT || 5000;
 const socket = require('socket.io');
 const withAuth = require('./middleware');
 
+//ssl stuff
+var options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/zachcbenny.com/privkey.pem','utf8'),
+    certificate: fs.readFileSync('/etc/letsencrypt/live/zachcbenny.com/cert.pem','utf8'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/zachcbenny.com/chain.pem','utf8')
+}
 //move this somewhere later
 const secret = 'secret';
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const server = app.listen(port, () => console.log(`Server listening on port: ${port}`));
+const server = https.createServer(app).listen(port, () => console.log(`Server listening on port: ${port}`));
 
 //METHOD TO GET ALL REGISTERED USERS FROM DB
 app.get('/api/users', async (req, res) => {
@@ -109,7 +117,7 @@ app.get('/api/checkToken', withAuth, (req, res) => {
 
 //CODE TO SETUP OUR SOCKET
 let clients = {};
-const io = socket(server, {secure: true, rejectUnauthorized: false, path: 'chat/socket.io'});
+const io = socket(server, {secure: true, rejectUnauthorized: false, path: '/chat/socket.io'});
 io.of('/chat');
 io.on('connection', (socket) => {
     console.log(`Socket ${socket.id} connected`);
