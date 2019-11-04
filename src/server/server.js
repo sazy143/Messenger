@@ -11,12 +11,7 @@ const port = process.env.PORT || 5000;
 const socket = require('socket.io');
 const withAuth = require('./middleware');
 
-//ssl stuff
-var options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/zachcbenny.com/privkey.pem','utf8'),
-    certificate: fs.readFileSync('/etc/letsencrypt/live/zachcbenny.com/cert.pem','utf8'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/zachcbenny.com/chain.pem','utf8')
-}
+
 //move this somewhere later
 const secret = 'secret';
 
@@ -117,13 +112,14 @@ app.get('/api/checkToken', withAuth, (req, res) => {
 
 //CODE TO SETUP OUR SOCKET
 let clients = {};
-const io = socket(server, {secure: true, rejectUnauthorized: false, path: '/chat/'});
-io.of('/chat');
+const io = socket(server, {
+    //secure: true, rejectUnauthorized: false, 
+    path: '/chat/'});
 io.on('connection', (socket) => {
     console.log(`Socket ${socket.id} connected`);
     
     socket.on('chat', data => {
-        io.of('/chat').emit('chat', data);
+        io.sockets.emit('chat', data);
         console.log('recieved and emited');
     });
     
