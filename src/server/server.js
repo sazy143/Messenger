@@ -113,13 +113,14 @@ app.get('/api/checkToken', withAuth, (req, res) => {
 //CODE TO SETUP OUR SOCKET
 let clients = {};
 const io = socket(server, {
-    //secure: true, rejectUnauthorized: false, 
-    path: '/chat/'});
-io.on('connection', (socket) => {
+    rejectUnauthorized: false, 
+    path: '/chat/socket.io'});
+let NS = io.of('/chat');
+NS.on('connection', (socket) => {
     console.log(`Socket ${socket.id} connected`);
-    
+//    console.log(socket);
     socket.on('chat', data => {
-        io.sockets.emit('chat', data);
+        NS.emit('chat', data);
         console.log('recieved and emited');
     });
     

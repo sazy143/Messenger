@@ -5,8 +5,8 @@ class ChatClient extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //server: 'https://zachcbenny.com/chat',
-            server:'http://localhost:5000',
+            server: 'https://zachcbenny.com/chat',
+//            server:'http://localhost:5000',
             message: '',
             userName: this.props.userName,
             messagesSent: 0,
@@ -15,7 +15,7 @@ class ChatClient extends Component {
         }
         socket = socketIOClient(this.state.server, {
             //secure:true, rejectUnauthorized: false, 
-            path: '/chat/'});
+            path: '/chat/socket.io'});
     }
     messagesEndRef = React.createRef();
     scrollToBottom = () => {
