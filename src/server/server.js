@@ -23,7 +23,7 @@ const secret = 'secret';
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const server = https.createServer(app).listen(port, () => console.log(`Server listening on port: ${port}`));
+const server = app.listen(port, () => console.log(`Server listening on port: ${port}`));
 
 //METHOD TO GET ALL REGISTERED USERS FROM DB
 app.get('/api/users', async (req, res) => {
@@ -117,13 +117,13 @@ app.get('/api/checkToken', withAuth, (req, res) => {
 
 //CODE TO SETUP OUR SOCKET
 let clients = {};
-const io = socket(server, {secure: true, rejectUnauthorized: false, path: '/chat/socket.io'});
+const io = socket(server, {secure: true, rejectUnauthorized: false, path: '/chat/'});
 io.of('/chat');
 io.on('connection', (socket) => {
     console.log(`Socket ${socket.id} connected`);
     
     socket.on('chat', data => {
-        io.sockets.emit('chat', data);
+        io.of('/chat').emit('chat', data);
         console.log('recieved and emited');
     });
     
